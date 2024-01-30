@@ -1,0 +1,78 @@
+ESTUDOS DOCKER
+
+- listar containers em execução
+docker ps [$commands]
+$ -a lista todos os container em exec e não exec
+$ -s adiciona a coluna size
+
+- gerar imagem
+docker build [$commands] [diretorio-para-salvar]
+exemplo: docker build -t kiarel/app-node-alura:1.0 . ("." foi usado para salvar no diretorio atual)
+$ -t <nome-da-imagem>:<version-tag> comando para escolher o nome da imagem
+
+- copiar imagem para mudar nome
+docker tag [nome-imagem] [nome-para-a-copia]
+
+- rodar container
+docker run [$commands] [container-name]
+# docker run cria um novo container e o executa
+$ -d (comando que serve para nao deixar o terminal travado)
+$ -p [portaHost]:[portaDoContainer] ex: -p 8080:80 (comando que serve para liberar o acesso usando uma porta do host de forma automatica)
+$ -P (comando que serve para liberar o acesso usando uma porta do host de forma automatica)
+$ -it iterativo
+$ -v [pasta-destinatario-salvos-no-host/ou/nome-do-volume]:[pasta-dados-que-serao-salvaos-no-container] exemplo: -v C:\Development\EstudosDocker\volume-docker:/app ubuntu bash (este comando serve para a persistencia de dados)
+$ --mount type=bind,source=[pasta-destinatario-salvos-no-host],target=[pasta-dados-que-serao-salvaos-no-container] exemplo: --mount type=bind,source=C:\Development\EstudosDocker\volume-docker,target=/app (este comando serve para a persistencia de dados usando um diretório criado por mim)
+$ --mount source=[nome-volume-se-nao-existir-cria-volume-novo],target=[pasta-dados-que-serao-salvaos-no-container] exemplo: --mount source=meu-volume,target=/app (este comando serve para a persistencia de dados usando volume)
+$ --mount type=tmpfs,destination=[pasta-destinatario-salvos-na-memoria] exemplo: --mount type=tmpfs,destination=/app (este comando serve para a persistencia de dados usando um diretório que vai ser criado na memoria)
+$ --name [nome-container] exemplo: --name ubuntu1
+$ --network [nome-network] exemplo: --network minha-bridge
+
+- rodar um comando no container
+docker exec [container-name/container-hash] [commands] 
+# O docker exec permite executar um comando em um container que já está em execução.
+
+- finalizar um container
+docker stop [container-name/container-hash]
+
+- finalizar tpdos os containers
+docker stop $(docker container ls -q)
+# o comando $(docker container ls -q) pega todos os hashs do containers onde o -q significa quiet que pega os hashs codes
+
+- pausar um container
+docker pause [container-name/container-hash]
+
+- despausar um container
+docker unpause [container-name/container-hash]
+
+- excluir container
+docker rm [container-name/container-hash] 
+
+- verificar as portas que o host liberou para o container
+docker port [container-name/container-hash]
+
+- verificar a lista de imagens
+docker images
+
+- verificar a lista de imagens
+docker inspect [image-name/image-hash]
+
+- verifica as camadas da imagem escolhida
+docker history [image-name/image-hash]
+
+- login no dockerhub
+docker login -u [username]
+
+- subir imagens para o dockerhub
+docker push [nome-imagem]
+
+- listar volume
+docker volume ls
+
+- criar volume
+docker volume create [nome-volume]
+
+- remover todos containers/imagems
+docker container rm $(docker container ls -aq) --force / docker image rm $(docker container ls -aq) --force 
+
+- criar network
+docker network create --driver [tipo-network] [nome-network] exemplo: docker network create --driver bridge minha-bridge
